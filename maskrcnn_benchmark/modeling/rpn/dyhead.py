@@ -325,7 +325,6 @@ class DyHead(torch.nn.Module):
 
 
 class DyHeadModule(torch.nn.Module):
-
     def __init__(self, cfg):
         super(DyHeadModule, self).__init__()
         self.cfg = cfg
@@ -358,7 +357,7 @@ class DyHeadModule(torch.nn.Module):
             return None, losses
         else:
             # boxes = self.box_selector_train(box_cls, box_regression, centerness, anchors)
-            boxes = self.box_selector_train(box_regression, centerness, anchors, box_cls)
+            boxes = self.box_selector_train(box_regression, centerness, anchors, box_cls) # boxes: [TODO]
             train_boxes = []
             # for b, a in zip(boxes, anchors):
             #     a = cat_boxlist(a)

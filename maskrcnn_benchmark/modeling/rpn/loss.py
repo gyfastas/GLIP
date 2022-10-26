@@ -514,9 +514,9 @@ class FCOSLossComputation(object):
         return cls_loss, reg_loss, centerness_loss
 
 
-# class ATSSLossComputation(object):
 class ATSSLossComputation(torch.nn.Module):
-
+    # TODO: ATSS means?
+    # TODO: We need to refactor the code!!! It is too dirty, without any inherent.
     def __init__(self, cfg, box_coder):
         super(ATSSLossComputation, self).__init__()
         
@@ -585,15 +585,26 @@ class ATSSLossComputation(torch.nn.Module):
         return loss_ce
 
     def ContrastiveAlignLoss(self, logits, positive_map):
+        """
+        TODO: refactor this loss; make comments
+
+        Args:
+            logits: [B, N, M], logits[:,i,j] indicates the unnormalized similarity 
+                between image i and text j.
+            positive_map: [B, N, M] binary tensor indicating 
+                whether the logits are positive. 
+                If positive_map[:,i,j]==1, it means i and j are positive image-text pair.
+        """
         positive_logits = -logits.masked_fill(~positive_map, 0)
         negative_logits = logits  # .masked_fill(positive_map, -1000000)
 
-        boxes_with_pos = positive_map.any(2)
+        boxes_with_pos = positive_map.any(2) # a mask indicating whether there is a pos logits
         pos_term = positive_logits.sum(2)
         neg_term = negative_logits.logsumexp(2)
 
         nb_pos = positive_map.sum(2) + 1e-6
 
+        ## pos_term / nb_pos is the average positive logits (when there are more than one texts matched)
         box_to_token_loss = ((pos_term / nb_pos + neg_term)).masked_fill(~boxes_with_pos, 0).sum()
 
         tokens_with_pos = positive_map.any(1)

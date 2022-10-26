@@ -860,7 +860,10 @@ class VLDyHead(torch.nn.Module):
 
 
 class VLDyHeadModule(torch.nn.Module):
+    """
+    This is the module used as "RPN" in GLIP.
 
+    """
     def __init__(self, cfg):
         super(VLDyHeadModule, self).__init__()
         self.cfg = cfg

@@ -78,7 +78,7 @@ class GeneralizedVLRCNN(nn.Module):
         self.backbone = build_backbone(cfg)
 
         # language encoder
-        if cfg.MODEL.LANGUAGE_BACKBONE.TOKENIZER_TYPE == "clip":
+        if cfg.MODEL.LANGUAGE_BACKBONE.TOKENIZER_TYPE == "clip": ##TODO: check clip tokenizer
             # self.tokenizer = build_tokenizer("clip")
             from transformers import CLIPTokenizerFast
             if cfg.MODEL.DYHEAD.FUSE_CONFIG.MLM_LOSS:
@@ -182,6 +182,8 @@ class GeneralizedVLRCNN(nn.Module):
         Arguments:
             images (list[Tensor] or ImageList): images to be processed
             targets (list[BoxList]): ground-truth boxes present in the image (optional)
+            captions ()
+
 
             mask_black_list: batch x 256, indicates whether or not a certain token is maskable or not
 
@@ -209,6 +211,7 @@ class GeneralizedVLRCNN(nn.Module):
             language_dict_features = {}
             if captions is not None:
                 #print(captions[0])
+                ## TODO: check the input and output of this function.
                 tokenized = self.tokenizer.batch_encode_plus(captions,
                                                             max_length=self.cfg.MODEL.LANGUAGE_BACKBONE.MAX_QUERY_LEN,
                                                             padding='max_length' if self.cfg.MODEL.LANGUAGE_BACKBONE.PAD_MAX else "longest",

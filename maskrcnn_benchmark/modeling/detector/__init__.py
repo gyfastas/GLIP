@@ -6,6 +6,10 @@ _DETECTION_META_ARCHITECTURES = {"GeneralizedRCNN": GeneralizedRCNN,
                                  }
 
 
-def build_detection_model(cfg):
+def build_detection_model(cfg): 
+    """
+    just build by an easy dict like mapping. 
+    We can modify this to registry.
+    """
     meta_arch = _DETECTION_META_ARCHITECTURES[cfg.MODEL.META_ARCHITECTURE]
     return meta_arch(cfg)
