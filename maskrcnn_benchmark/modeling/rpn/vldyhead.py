@@ -36,7 +36,8 @@ class h_sigmoid(nn.Module):
 
 
 class BoxCoder(object):
-
+    ## TODO: Why there is another BoxCoder?
+    ## This class could be merged with maskrcnn_benchmark.modeling.box_coder.BoxCoder
     def __init__(self, cfg):
         self.cfg = cfg
 
@@ -558,6 +559,11 @@ class VLFuse(torch.nn.Module):
 
 
 class VLDyHead(torch.nn.Module):
+    """
+    This head actually generates 
+    the outputs for calculating the loss. 
+    TODO: we can refactor the code into mmdet style. 
+    """
     def __init__(self, cfg):
         super(VLDyHead, self).__init__()
         self.cfg = cfg
@@ -861,7 +867,13 @@ class VLDyHead(torch.nn.Module):
 
 class VLDyHeadModule(torch.nn.Module):
     """
-    This is the module used as "RPN" in GLIP.
+    This is the module used as "RPN" in GLIP, actually performs as a 
+    pipeline connecting head and loss.
+    Head: VLDyHead
+    Loss: maskrcnn_benchmark.modeling.rpn.loss.ATSSLossComputation
+    
+    [TODO: why putting all of the loss in a file? 
+    Let's refactor by splitting them into different files.]
 
     """
     def __init__(self, cfg):

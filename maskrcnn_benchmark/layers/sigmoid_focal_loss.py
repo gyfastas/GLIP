@@ -172,6 +172,7 @@ def token_sigmoid_binary_focal_loss(pred_logits, targets, alpha, gamma, text_mas
 
 
 class TokenSigmoidFocalLoss(nn.Module):
+    # TODO: refactor it with other loss functions into a loss sub-modules.
     def __init__(self, alpha, gamma):
         super(TokenSigmoidFocalLoss, self).__init__()
         self.alpha = alpha

@@ -584,7 +584,7 @@ class ATSSLossComputation(torch.nn.Module):
             -1)  # basically, only the those positives with positive target_sim will have losses
         return loss_ce
 
-    def ContrastiveAlignLoss(self, logits, positive_map):
+    def ContrastiveAlignLoss(self, logits, positive_map): ## TODO: make it a class rather than a function.
         """
         TODO: refactor this loss; make comments
 
@@ -618,7 +618,7 @@ class ATSSLossComputation(torch.nn.Module):
 
         return tot_loss
 
-    def GIoULoss(self, pred, target, anchor, weight=None):
+    def GIoULoss(self, pred, target, anchor, weight=None): ## TODO: make it a class rather than a function.
         pred_boxes = self.box_coder.decode(pred.view(-1, 4), anchor.view(-1, 4))
         pred_x1 = pred_boxes[:, 0]
         pred_y1 = pred_boxes[:, 1]
@@ -662,6 +662,15 @@ class ATSSLossComputation(torch.nn.Module):
             return losses.sum()
 
     def prepare_targets(self, targets, anchors, tokenized=None, positive_map=None, proj_tokens=None):
+        """
+        Args:
+            targets: 
+            anchors:
+            tokenized: 
+            positive_map: (optional) Tensor [B, N, M]
+            proj_tokens: (optional)
+        """
+
         cls_labels = []
         reg_targets = []
         token_labels = []
